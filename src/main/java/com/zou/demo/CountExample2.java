@@ -1,18 +1,16 @@
 package com.zou.demo;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-public class CountExample {
+public class CountExample2 {
 
     private static int threadNumber = 200;
     private static int clientNumber = 5000;
 
-    private static Map<Integer, Integer> map = new HashMap<>();
 
+    private static long count = 0;
 
     public static void main(String[] args) {
 
@@ -23,13 +21,12 @@ public class CountExample {
         final Semaphore semaphore = new Semaphore(threadNumber);
 
         for (int index = 0; index < clientNumber; index++) {
-            final int threadNumber = index;
 
             executorService.execute(() -> {
 
                 try {
                     semaphore.acquire();
-                    add2(threadNumber);
+                    add();
                     semaphore.release();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -40,15 +37,15 @@ public class CountExample {
 
         executorService.shutdown();
 
-        System.out.println(map.size());
+        System.out.println(count);
 
     }
 
 
     //加法计数操作
-    private static void add2(int threadNumber) {
+    private static void add() {
 
-        map.put(threadNumber, threadNumber);
+        count++;
     }
 
 }
